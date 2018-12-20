@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart' show Constants;
+
 class NavigationIconView{
   final String _title;
-  final Widget _icon;
-  final Widget _activeIcon;
+  final IconData _icon;
+  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
-  NavigationIconView({Key key, String title, Widget icon, Widget activeIcon}) :
+  NavigationIconView({Key key, String title, IconData icon, IconData activeIcon}) :
     _title = title,
     _icon = icon,
     _activeIcon = activeIcon,
     item = new BottomNavigationBarItem(
-      icon: icon,
-      activeIcon: activeIcon,
+      icon: Icon(icon),
+      activeIcon: Icon(activeIcon),
       title: Text(title),
       backgroundColor: Colors.white
     );
@@ -30,23 +32,39 @@ class _HomeScreenState extends State<HomeScreen> {
     _navigationViews = [
       NavigationIconView(
         title: '微信',
-        icon: Icon(Icons.ac_unit),
-        activeIcon: Icon(Icons.access_alarm)
+        icon: IconData(
+          0xe602, fontFamily: Constants.IconFontFamily
+        ),
+        activeIcon: IconData(
+          0xe601, fontFamily: Constants.IconFontFamily
+        ),
       ),
       NavigationIconView(
         title: '通讯录',
-        icon: Icon(Icons.radio),
-        activeIcon: Icon(Icons.rate_review)
+        icon: IconData(
+          0xe634, fontFamily: Constants.IconFontFamily
+        ),
+        activeIcon: IconData(
+          0xe622, fontFamily: Constants.IconFontFamily
+        ),
       ),
       NavigationIconView(
         title: '发现',
-        icon: Icon(Icons.tab),
-        activeIcon: Icon(Icons.tab_unselected)
+        icon: IconData(
+          0xe64e, fontFamily: Constants.IconFontFamily
+        ),
+        activeIcon: IconData(
+          0xe60f, fontFamily: Constants.IconFontFamily
+        ),
       ),
       NavigationIconView(
         title: '我',
-        icon: Icon(Icons.portrait),
-        activeIcon: Icon(Icons.power)
+        icon: IconData(
+          0xe600, fontFamily: Constants.IconFontFamily
+        ),
+        activeIcon: IconData(
+          0xe60a, fontFamily: Constants.IconFontFamily
+        ),
       ),
     ];
   }
