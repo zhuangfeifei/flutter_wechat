@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart' show Constants, AppColors;
 
+enum ActionItems {
+  GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT
+}
+
 class NavigationIconView{
   final String _title;
   final IconData _icon;
@@ -71,6 +75,18 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  _buildPopupMunItem(int iconName, String title){
+    return Row(
+      children: <Widget>[
+        Icon(IconData(
+          iconName, fontFamily: Constants.IconFontFamily
+        )),
+        Container(width: 16.0,),
+        Text(title)
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
@@ -88,12 +104,32 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('微信'),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.search),
+            icon: Icon(Icons.search, size: 22.0,),
             onPressed: (){print('搜素');},
           ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: (){print('+');},
+          PopupMenuButton(
+            itemBuilder: (BuildContext context){
+              return <PopupMenuItem<ActionItems>>[
+                PopupMenuItem(
+                  child: _buildPopupMunItem(0xe64a, '发起群聊'),
+                  value: ActionItems.GROUP_CHAT,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunItem(0xe638, '添加朋友'),
+                  value: ActionItems.ADD_FRIEND,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunItem(0xe6a2, '扫一扫'),
+                  value: ActionItems.QR_SCAN,
+                ),
+                PopupMenuItem(
+                  child: _buildPopupMunItem(0xe603, '收付款'),
+                  value: ActionItems.PAYMENT,
+                ),
+              ];
+            },
+            icon: Icon(Icons.add, size: 22.0,),
+            onSelected: (ActionItems selected){ print('点击了$selected'); },
           ),
         ],
       ),
