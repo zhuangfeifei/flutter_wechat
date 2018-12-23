@@ -2,26 +2,20 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart' show Constants, AppColors;
 
+import './conversation_page.dart';
+
 enum ActionItems {
   GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT
 }
 
 class NavigationIconView{
-  final String _title;
-  final IconData _icon;
-  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
   NavigationIconView({Key key, String title, IconData icon, IconData activeIcon}) :
-    _title = title,
-    _icon = icon,
-    _activeIcon = activeIcon,
-    item = new BottomNavigationBarItem(
-      icon: Icon(icon, color: Color(AppColors.TabIconNormal),),
-      activeIcon: Icon(activeIcon, color: Color(AppColors.TabIconActive),),
-      title: Text(title, style: TextStyle(
-        fontSize: 14.0,
-        color: Color(AppColors.TabIconNormal)),),
+    item = BottomNavigationBarItem(
+      icon: Icon(icon),
+      activeIcon: Icon(activeIcon),
+      title: Text(title),
       backgroundColor: Colors.white
     );
 }
@@ -31,7 +25,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  PageController  _pageController;
+  int _curretIndex = 0;
   List<NavigationIconView> _navigationViews;
+  List<Widget> _pages; 
 
   void initState(){
     super.initState();
@@ -48,10 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
       NavigationIconView(
         title: '通讯录',
         icon: IconData(
-          0xe634, fontFamily: Constants.IconFontFamily
+          0xe61c, fontFamily: Constants.IconFontFamily
         ),
         activeIcon: IconData(
-          0xe622, fontFamily: Constants.IconFontFamily
+          0xe657, fontFamily: Constants.IconFontFamily
         ),
       ),
       NavigationIconView(
@@ -73,6 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     ];
+    _pageController = PageController(initialPage: _curretIndex);
+    _pages = [
+      ConversationPage(),
+      Container(color: Colors.yellow,),
+      Container(color: Colors.green,),
+      Container(color: Colors.black,),
+    ];
   }
 
   _buildPopupMunItem(int iconName, String title){
@@ -90,23 +94,26 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
+      fixedColor: const Color(AppColors.TabIconActive),
       items: _navigationViews.map((NavigationIconView view){
         return view.item;
       }).toList(),
-      currentIndex: 0,
+      currentIndex: _curretIndex,
       type: BottomNavigationBarType.fixed,
       onTap: (int index){
-        print('$index个Tab');
+        setState(() {
+          _curretIndex = index;
+
+          _pageController.animateToPage(_curretIndex,
+           duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+        });
       },
     );
     return Scaffold(
       appBar: AppBar(
         title: Text('微信'),
+        elevation: 0.0,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.search, size: 22.0,),
-            onPressed: (){print('搜素');},
-          ),
           PopupMenuButton(
             itemBuilder: (BuildContext context){
               return <PopupMenuItem<ActionItems>>[
@@ -128,13 +135,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ];
             },
-            icon: Icon(Icons.add, size: 22.0,),
+            icon: Icon(Icons.add, size: 30.0,),
             onSelected: (ActionItems selected){ print('点击了$selected'); },
           ),
+          SizedBox(width: 16.0,)
         ],
       ),
-      body: Container(
-        color: Colors.white,
+      body: PageView.builder(
+        itemBuilder: (BuildContext context, int index){
+          return _pages[index];
+        },
+        controller: _pageController,
+        itemCount: _pages.length,
+        onPageChanged: (int index){
+          setState(() {
+            _curretIndex = index;        
+          });
+        },
       ),
       bottomNavigationBar: botNavBar,
     );
