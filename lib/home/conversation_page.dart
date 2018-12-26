@@ -49,13 +49,13 @@ class _ConversationItem extends StatelessWidget {
       _rightArea.add(
         Icon(IconData(
           0xe74c, fontFamily: Constants.IconFontFamily,
-        ), color: Color(AppColors.ConversationMuteIconSize), size: Constants.ConversationMuteIconSize,);
+        ), color: Color(AppColors.ConversationMuteIconSize), size: Constants.ConversationMuteIconSize,)
       );
     }else{
       _rightArea.add(
         Icon(IconData(
           0xe74c, fontFamily: Constants.IconFontFamily,
-        ), color: Colors.transparent, size: Constants.ConversationMuteIconSize,);
+        ), color: Colors.transparent, size: Constants.ConversationMuteIconSize,)
       );
     }
     

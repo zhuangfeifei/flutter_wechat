@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart' show Constants, AppColors;
 
 import './conversation_page.dart';
+import '../contact/contact_page.dart';
 
 enum ActionItems {
   GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT
@@ -73,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _pageController = PageController(initialPage: _curretIndex);
     _pages = [
       ConversationPage(),
-      Container(color: Colors.yellow,),
+      ContactPage(),
       Container(color: Colors.green,),
       Container(color: Colors.black,),
     ];
