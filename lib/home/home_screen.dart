@@ -4,6 +4,8 @@ import '../constants.dart' show Constants, AppColors;
 
 import './conversation_page.dart';
 import '../contact/contact_page.dart';
+import '../found/found_page.dart';
+import '../my/my_page.dart';
 
 enum ActionItems {
   GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT
@@ -75,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _pages = [
       ConversationPage(),
       ContactPage(),
-      Container(color: Colors.green,),
-      Container(color: Colors.black,),
+      FoundPage(),
+      MyPage(),
     ];
   }
 

@@ -42,7 +42,7 @@ class AppStyles{
 class Constants {
   static const IconFontFamily = "appIcoFont";
   static const ConversationAvatarSize = 48.0;  // 头像大小
-  static const DividerWidth = 1.0;             // 底部边框
+  static const DividerWidth = 0.5;             // 底部边框
   static const UnreadMsgNotifyDotSize = 20.0;  // 未读消息大小
   static const ConversationMuteIconSize = 20.0;  // 免打扰
 }

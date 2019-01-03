@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../model/contact.dart' show Contact, ContactsItem;
 
+const LETTER = [
+  "↑", "☆",
+  "A", "B", "C", "D", "E", "F", "G",
+  "H", "I", "J", "K", "L", "M", "N",
+  "O", "P", "Q", "R", "S", "T", "U",
+  "V", "W", "X", "Y", "Z"
+];
+
 class ContactPage extends StatefulWidget {
+  Color _color = Colors.transparent;
   _ContactPageState createState() => _ContactPageState();
 }
 
@@ -39,23 +48,65 @@ class _ContactPageState extends State<ContactPage> {
     // 按照字母排序
     _data.sort((Contact a, Contact b) => a.nameIndex.compareTo(b.nameIndex));
   }
-  Widget build(BuildContext context) {
 
-    return Container(
-      color: Colors.white,
-      child: ListView.builder(
-        itemCount: _data.length + _staticView.length,
-        itemBuilder: (BuildContext context, int index){
-          if(index < _staticView.length){  // 静态
-            return _staticView[index];
-          }else{
-            Contact _contact = _data[index - _staticView.length];
-            // 判断显示分类  如果与他前一个相同，就隐藏
-            bool _isNameIndex = index > _staticView.length && _data[index - _staticView.length -1].nameIndex == _contact.nameIndex ? false : true;
-            return _ContactView(avatar: _contact.avatar, name: _contact.name, nameIndex: _isNameIndex ? _contact.nameIndex : null );
-          }
-        },            
+  Widget _buildIndexBar(BuildContext context, BoxConstraints constraints){
+    final List<Widget> _letters = LETTER.map((String word){
+      return Expanded(
+        child: Text(word),
+      );
+    }).toList();
+    return GestureDetector(
+      child: Column(
+        children: _letters
       ),
+      onHorizontalDragDown: (DragDownDetails event){
+        setState(() {
+          widget._color = Colors.black26;
+          print(event);
+        });
+      },
+      onHorizontalDragCancel: (){
+        setState(() {
+          widget._color = Colors.transparent;
+        });
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: Colors.white,
+          child: ListView.builder(
+            itemCount: _data.length + _staticView.length,
+            itemBuilder: (BuildContext context, int index){
+              if(index < _staticView.length){  // 静态
+                return _staticView[index];
+              }
+              int _index = index - _staticView.length;
+              Contact _contact = _data[_index];
+              // 判断显示分类  如果与他前一个相同，就隐藏
+              bool _isNameIndex = _index > 0 && _data[_index - 1].nameIndex == _contact.nameIndex ? false : true;
+              return _ContactView(
+                avatar: _contact.avatar, 
+                name: _contact.name, 
+                nameIndex: _isNameIndex ? _contact.nameIndex : null 
+              );
+            },            
+          ),
+        ),
+        Positioned(
+          width: 30.0, right: 0.0, top: 0.0, bottom: 0.0,
+          child: Container(
+            color: widget._color,
+            child: LayoutBuilder(
+              builder: _buildIndexBar,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
